@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Não é só um poema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night: #0b1330;
+    --night-deep: #060a1c;
+    --blue-soft: #223668;
+    --blue-glow: #5b7fd6;
+    --rose: #f3a7c4;
+    --rose-soft: #ffd9e8;
+    --gold: #e8c988;
+    --paper: #fdf9f4;
+    --ink: #f4eefc;
+    --ink-dim: rgba(244,238,252,0.72);
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(91,127,214,0.25), transparent 55%),
+      radial-gradient(ellipse at 80% 30%, rgba(243,167,196,0.14), transparent 50%),
+      linear-gradient(180deg, var(--night-deep), var(--night) 40%, #0d1636 100%);
+    color: var(--ink);
+    font-family: 'Lora', serif;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* estrelas ambientes */
+  .stars{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 20%, rgba(255,255,255,0.55) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 80% 10%, rgba(255,255,255,0.4) 50%, transparent 51%),
+      radial-gradient(1px 1px at 60% 70%, rgba(255,255,255,0.5) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 30% 85%, rgba(255,255,255,0.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,0.45) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 45% 40%, rgba(255,255,255,0.4) 50%, transparent 51%),
+      radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.4) 50%, transparent 51%);
+    background-size: 100% 100%;
+    animation: twinkle 6s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle{ from{opacity:.5;} to{opacity:1;} }
+
+  section{
+    position:relative; z-index:1;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding: 8vh 6vw;
+    text-align:center;
+  }
+
+  /* HERO */
+  .eyebrow{
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    font-size:0.7rem;
+    color: var(--rose);
+    font-family:'Lora', serif;
+    margin-bottom:1.4rem;
+    opacity:0.85;
+  }
+
+  h1.title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-style:italic;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    line-height:1.05;
+    margin:0 0 1.2rem 0;
+    background: linear-gradient(100deg, var(--rose-soft), var(--gold) 45%, var(--blue-glow) 90%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    letter-spacing:0.01em;
+  }
+
+  .subtitle{
+    max-width:520px;
+    font-size:1.05rem;
+    color: var(--ink-dim);
+    line-height:1.7;
+  }
+
+  .scroll-hint{
+    margin-top:4rem;
+    font-size:0.85rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color: var(--ink-dim);
+    display:flex; flex-direction:column; align-items:center; gap:.6rem;
+    opacity:.8;
+  }
+  .scroll-hint .line{
+    width:1px; height:38px;
+    background: linear-gradient(var(--rose), transparent);
+    animation: dropline 1.8s ease-in-out infinite;
+  }
+  @keyframes dropline{ 0%{transform:scaleY(0.4); opacity:.3;} 50%{transform:scaleY(1); opacity:1;} 100%{transform:scaleY(0.4); opacity:.3;} }
+
+  /* POEMA */
+  .poema-wrap{ max-width:640px; width:100%; }
+  .stanza{
+    opacity:0; transform: translateY(28px);
+    transition: opacity 1.1s ease, transform 1.1s ease;
+    margin-bottom: 6rem;
+  }
+  .stanza.visible{ opacity:1; transform:none; }
+  .stanza-number{
+    font-size:0.72rem; letter-spacing:.3em; text-transform:uppercase;
+    color: var(--gold); margin-bottom:1rem; display:block; opacity:.8;
+  }
+  .stanza p{
+    font-family:'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3.4vw, 2.05rem);
+    font-style:italic;
+    font-weight:500;
+    line-height:1.55;
+    margin:0;
+    color: var(--ink);
+  }
+  .stanza.tribute p{
+    background: linear-gradient(100deg, var(--rose-soft), var(--gold));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .tribute-note{
+    margin-top:1.6rem;
+    font-family:'Lora', serif; font-style:normal;
+    font-size:0.95rem; color:var(--ink-dim);
+    letter-spacing:.02em;
+  }
+
+  /* FLOR */
+  .flower-section{ gap:2.4rem; }
+  .flower-intro{
+    max-width:480px; font-size:1.05rem; color:var(--ink-dim); line-height:1.7;
+  }
+  .flower-btn{
+    appearance:none; border:1px solid rgba(243,167,196,0.5);
+    background: rgba(243,167,196,0.08);
+    color: var(--rose-soft);
+    font-family:'Lora', serif; font-size:0.95rem; letter-spacing:.08em;
+    padding: 0.9rem 2.2rem; border-radius:999px; cursor:pointer;
+    transition: all .4s ease;
+  }
+  .flower-btn:hover{ background: rgba(243,167,196,0.18); transform: translateY(-2px); box-shadow:0 8px 30px rgba(243,167,196,0.25); }
+  .flower-btn.hidden{ display:none; }
+
+  .flower-stage{
+    width:280px; height:280px; display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .flower-stage svg{ width:100%; height:100%; overflow:visible; }
+  .petal{
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+    opacity:0;
+    transition: transform 1.2s cubic-bezier(.2,1.4,.4,1), opacity 1s ease;
+  }
+  .flower-stage.bloom .petal{ transform: scale(1); opacity:1; }
+  .flower-stage.bloom .center-glow{ transform: scale(1); opacity:1; transition-delay:.5s; }
+  .center-glow{ transform-origin:150px 150px; transform:scale(0); opacity:0; transition: transform 1s ease, opacity 1s ease; }
+
+  .flower-phrase{
+    max-width:520px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic; font-weight:500;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    line-height:1.6;
+    color: var(--ink);
+    opacity:0; transform: translateY(14px);
+    transition: opacity 1.2s ease .3s, transform 1.2s ease .3s;
+  }
+  .flower-phrase.visible{ opacity:1; transform:none; }
+
+  .magic-btn{
+    margin-top:1rem;
+    appearance:none; border:none; cursor:pointer;
+    background: linear-gradient(120deg, var(--blue-glow), var(--rose));
+    color:#0b1330; font-weight:600; letter-spacing:.05em;
+    font-family:'Lora', serif; font-size:0.95rem;
+    padding: 1rem 2.6rem; border-radius:999px;
+    opacity:0; transform: translateY(10px); pointer-events:none;
+    transition: opacity 1s ease .2s, transform 1s ease .2s, box-shadow .3s ease;
+  }
+  .magic-btn.visible{ opacity:1; transform:none; pointer-events:auto; }
+  .magic-btn:hover{ box-shadow: 0 10px 34px rgba(91,127,214,0.45); }
+
+  /* CARTA */
+  .carta-section{ display:none; }
+  .carta-section.active{ display:flex; }
+  .carta-wrap{
+    max-width:640px; text-align:left;
+  }
+  .carta-eyebrow{
+    text-align:center; letter-spacing:.35em; text-transform:uppercase;
+    font-size:0.7rem; color:var(--gold); margin-bottom:1rem; opacity:.85;
+  }
+  .carta-title{
+    text-align:center;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:600;
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: 0 0 3rem 0;
+    color: var(--rose-soft);
+  }
+  .carta-wrap p{
+    font-size:1.05rem; line-height:1.9; color: var(--ink-dim);
+    margin: 0 0 1.6rem 0;
+    opacity:0; transform: translateY(16px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .carta-wrap p.visible{ opacity:1; transform:none; }
+  .carta-wrap strong{ color: var(--ink); font-weight:600; }
+  .carta-wrap em{ color: var(--rose-soft); font-style:italic; }
+
+  .signature{
+    margin-top:2rem; text-align:center;
+    font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.4rem;
+    color: var(--gold);
+  }
+
+  .final-note{
+    margin-top: 4rem;
+    text-align:center;
+    font-size:0.85rem;
+    color: var(--ink-dim);
+    opacity:.6;
+    letter-spacing:.05em;
+  }
+
+  @media (max-width:480px){
+    section{ padding: 10vh 6vw; }
+    .flower-stage{ width:220px; height:220px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="eyebrow">para você</span>
+  <h1 class="title">Não é só<br>um poema</h1>
+  <p class="subtitle">É um pedaço de mim, escrito pra atravessar a distância e chegar exatamente onde você está agora. Role a tela, devagar, como se eu estivesse sussurrando isso perto de você.</p>
+  <div class="scroll-hint"><div class="line"></div>role para começar</div>
+</section>
+
+<!-- POEMA -->
+<section class="poema-section">
+  <div class="poema-wrap">
+
+    <div class="stanza" data-stanza>
+      <span class="stanza-number">I</span>
+      <p>Não há régua que meça o tamanho do que sinto,<br>
+      nem tinta que copie o que no peito eu pinto,<br>
+      tu és o motivo de cada manhã sem fim,<br>
+      a razão pela qual o mundo faz sentido pra mim.</p>
+    </div>
+
+    <div class="stanza" data-stanza>
+      <span class="stanza-number">II</span>
+      <p>Confesso o ciúme que mora dentro do meu peito,<br>
+      um sentimento cru, ainda longe de ser perfeito,<br>
+      mas prometo evoluir, mudar o que for preciso,<br>
+      pra nunca mais te machucar ou tirar teu sorriso.</p>
+    </div>
+
+    <div class="stanza" data-stanza>
+      <span class="stanza-number">III</span>
+      <p>Sei que a distância pesa nesse exato momento,<br>
+      e dói mais forte quando cresce esse lamento,<br>
+      mas cada pensamento meu atravessa o vento,<br>
+      carregando até você todo o meu sentimento.</p>
+    </div>
+
+    <div class="stanza tribute" data-stanza>
+      <span class="stanza-number">IV — para o Gabriel</span>
+      <p>Hoje faz um ano sem Gabriel por perto,<br>
+      seu riso ainda ecoa nesse peito aberto,<br>
+      que a dor vire, aos poucos, uma doce lembrança,<br>
+      e ele, lá de cima, cuide da nossa esperança.</p>
+      <div class="tribute-note">Se hoje dói mais, é porque amou de verdade. E o que se ama de verdade nunca vai embora por completo — fica no jeito de rir, na música, em cada memória que ainda aquece.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FLOR -->
+<section class="flower-section">
+  <p class="flower-intro">Antes de continuar... aperte o botão abaixo. Deixa alguma coisa nascer pra você, do jeitinho que você merece ver florescer, mesmo nos dias mais difíceis.</p>
+
+  <button class="flower-btn" id="flowerBtn">🌸 aperte aqui, meu amor</button>
+
+  <div class="flower-stage" id="flowerStage">
+    <svg viewBox="0 0 300 300">
+      <g transform="rotate(0 150 150)"><ellipse class="petal" cx="150" cy="95" rx="34" ry="58" fill="#f3a7c4" style="transition-delay:.05s"/></g>
+      <g transform="rotate(60 150 150)"><ellipse class="petal" cx="150" cy="95" rx="34" ry="58" fill="#ffd9e8" style="transition-delay:.12s"/></g>
+      <g transform="rotate(120 150 150)"><ellipse class="petal" cx="150" cy="95" rx="34" ry="58" fill="#f3a7c4" style="transition-delay:.19s"/></g>
+      <g transform="rotate(180 150 150)"><ellipse class="petal" cx="150" cy="95" rx="34" ry="58" fill="#ffd9e8" style="transition-delay:.26s"/></g>
+      <g transform="rotate(240 150 150)"><ellipse class="petal" cx="150" cy="95" rx="34" ry="58" fill="#f3a7c4" style="transition-delay:.33s"/></g>
+      <g transform="rotate(300 150 150)"><ellipse class="petal" cx="150" cy="95" rx="34" ry="58" fill="#ffd9e8" style="transition-delay:.40s"/></g>
+      <circle class="center-glow" cx="150" cy="150" r="22" fill="#e8c988"/>
+    </svg>
+  </div>
+
+  <p class="flower-phrase" id="flowerPhrase">Você não está sozinha: cada pétala que se abre aqui é a prova de que, mesmo no inverno mais cruel, existe em você algo que insiste — e sabe — florescer.</p>
+
+  <button class="magic-btn" id="magicBtn">✨ toque a magia</button>
+</section>
+
+<!-- CARTA -->
+<section class="carta-section" id="cartaSection">
+  <div class="carta-wrap">
+    <div class="carta-eyebrow">a parte mais importante</div>
+    <h2 class="carta-title">Escuta isso, com calma</h2>
+
+    <p data-p>Se você chegou até aqui, respira fundo um instante. Solta o ar bem devagar. De novo, se precisar. O que eu vou dizer agora eu preciso que você realmente escute, não só leia — deixa entrar, sem pressa.</p>
+
+    <p data-p>Você <strong>não é inútil</strong>. Nunca foi, nunca vai ser. Inútil é uma palavra que a dor às vezes empresta pra gente, pra fazer a gente acreditar em algo que não é verdade. E eu conheço você o suficiente pra saber que isso é mentira. Você é a pessoa que segura os outros de pé mesmo quando está caindo por dentro. Isso não é fraqueza — é uma força que muita gente nem imagina ter.</p>
+
+    <p data-p>Eu sei que agora dói. Sei que tem dias em que só respirar já parece trabalho demais. E queria estar aí, de verdade, pra te abraçar sem precisar de palavra nenhuma. Como não posso, deixo aqui o que eu teria feito com os braços: te dizer que <em>esse peso não é seu pra carregar sozinha</em>. Nunca foi.</p>
+
+    <p data-p>Presta atenção só mais um pouco em como seu corpo está agora. Os ombros, será que estão tensos? Deixa eles caírem um pouco. A mandíbula, será que está travada? Solta. Não precisa resolver nada nesse instante, só precisa estar aqui, inteira, respirando. Cada respiração sua é uma prova de que você continua — e continuar, nos dias difíceis, já é uma forma silenciosa de coragem.</p>
+
+    <p data-p>A saudade do Gabriel não vai embora de uma vez, e tudo bem. Luto não tem prazo, não tem certo ou errado. O que existe é o tempo de cada um, e o direito de sentir tudo o que precisar sentir — hoje, amanhã, daqui um mês, daqui um ano de novo. Ele fez parte da nossa história de um jeito que continua fazendo, mesmo ausente. E o amor que a gente teve por ele também é isso: continuar, de outra forma, mais silenciosa, mas real.</p>
+
+    <p data-p>Se hoje a tristeza parecer grande demais pra caber dentro de você, lembra: ela não veio pra ficar do tamanho que está agora. As emoções mais fortes são como ondas — sobem, tomam conta, parecem que nunca vão baixar, e mesmo assim baixam. Você já atravessou outras ondas antes. Essa também vai passar por você, não pra te levar, mas pra te mostrar, no fim, que você resiste.</p>
+
+    <p data-p>Eu quero que você saiba de uma coisa que às vezes esqueço de dizer com todas as letras: você tem gente incrível ao seu redor. Amigos que ficam, que escutam, que aparecem sem precisar chamar duas vezes. E eu, com meu jeitinho enjoado, ciumento, meio trapalhão quando o assunto é dividir sua atenção — eu tô aprendendo. Aprendendo que amor de verdade não aperta, acolhe. Que proteger você não é te isolar, é te dar espaço pra ser feliz do jeito que faz sentido pra você, com quem você escolher por perto. Eu erro, ainda vou errar algumas vezes, mas prometo: cada erro vira aprendizado, e cada aprendizado é por nós dois.</p>
+
+    <p data-p>Não se cobra por não estar bem agora. Não existe um jeito certo de atravessar um dia difícil, e você não deve satisfação a ninguém por sentir o que sente. Se hoje o único objetivo for chegar até a noite, então que seja esse o objetivo — e só isso já vai ser suficiente. Amanhã a gente pensa no resto.</p>
+
+    <p data-p>Lembra de todas as vezes que você achou que não ia conseguir e conseguiu de qualquer jeito? Elas existiram, cada uma delas, mesmo quando pareciam impossíveis na hora. Isso não some. Fica guardado em você, como prova de que essa versão sua — a que segue mesmo cansada — já provou, mais de uma vez, do que é capaz.</p>
+
+    <p data-p>Então guarda isso: você é forte de um jeito que nem sempre percebe. Você é capaz, é amada, é necessária no mundo de muito mais gente do que imagina — e principalmente na minha vida, onde ocupa um espaço que não tem substituto. Nos dias ruins, eu quero ser o lugar onde você pode desabar sem medo de julgamento. Nos dias bons, quero ser a razão de um sorriso a mais.</p>
+
+    <p data-p>Imagina comigo, só um instante: um dia, não muito distante, você vai olhar pra trás e ver esse período como uma travessia — difícil, real, dolorida, mas uma travessia. E do outro lado dela, vai ter você, um pouco mais forte, ainda inteira, ainda capaz de amar e de sorrir igual sempre soube fazer. Eu quero estar exatamente ali, do seu lado, quando isso acontecer. E enquanto esse dia não chega, eu fico aqui, presente do jeito que der, torcendo, cuidando, esperando por você com toda a paciência que esse amor tiver.</p>
+
+    <p data-p>Não desiste de você. Eu não desisto de nós. E onde quer que o Gabriel esteja, tenho certeza de que ele quer te ver sorrir de novo — não porque a dor precise sumir rápido, mas porque ele sabia, melhor que ninguém, o quanto sua alegria é bonita de ver.</p>
+
+    <p data-p>Se puder, agora, feche os olhos por uns segundos. Respira fundo mais uma vez. E lembra: você não está sozinha nessa noite, nesse dia, nesse momento exato. Eu estou aqui, mesmo de longe. Segurando sua mão do jeito que dá.</p>
+
+    <p data-p>Te amo além do que qualquer verso alcança. Segura a minha mão, mesmo de longe. Eu tô aqui.</p>
+
+    <div class="signature" data-p>— seu, sempre.</div>
+
+    <div class="final-note" data-p>feito com tudo que eu tenho, pra você.</div>
+  </div>
+</section>
+
+<script>
+  // reveal das estrofes ao rolar
+  const stanzas = document.querySelectorAll('[data-stanza]');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
+  }, { threshold: 0.35 });
+  stanzas.forEach(s=>io.observe(s));
+
+  // flor
+  const flowerBtn = document.getElementById('flowerBtn');
+  const flowerStage = document.getElementById('flowerStage');
+  const flowerPhrase = document.getElementById('flowerPhrase');
+  const magicBtn = document.getElementById('magicBtn');
+
+  flowerBtn.addEventListener('click', ()=>{
+    flowerStage.classList.add('bloom');
+    flowerBtn.classList.add('hidden');
+    setTimeout(()=>{ flowerPhrase.classList.add('visible'); }, 700);
+    setTimeout(()=>{ magicBtn.classList.add('visible'); }, 1400);
+  });
+
+  // botão mágico -> carta
+  const cartaSection = document.getElementById('cartaSection');
+  magicBtn.addEventListener('click', ()=>{
+    cartaSection.classList.add('active');
+    cartaSection.scrollIntoView({ behavior:'smooth' });
+    setTimeout(()=>{
+      const ps = cartaSection.querySelectorAll('[data-p]');
+      ps.forEach((p,i)=>{
+        setTimeout(()=>p.classList.add('visible'), i*380);
+      });
+    }, 500);
+  });
+</script>
+
+</body>
+</html>
